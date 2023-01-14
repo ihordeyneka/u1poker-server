@@ -18,10 +18,11 @@ namespace U1Poker.StartCompetition
         [FunctionName("StartCompetition")]
         [return: Table("Competition", Connection = "AzureWebJobsStorage")]
         public static Competition Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] dynamic input,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest request,
             ILogger log)
         {
-            var competition = input.Competition;
+            var competition = request.Query.ContainsKey("Competition") ? request.Query["Competition"].ToString() :
+                $"Competition - {DateTime.Today.ToShortDateString()}";
             var accessCode = GenerateAccessCode();
 
             return new Competition { Name = competition, AccessCode = accessCode, RegistrationActive = true };
