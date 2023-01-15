@@ -25,7 +25,7 @@ namespace U1Poker.StartCompetition
                 $"Competition - {DateTime.Today.ToShortDateString()}";
             var accessCode = GenerateAccessCode();
 
-            return new Competition { Name = competition, AccessCode = accessCode, RegistrationActive = true };
+            return new Competition { PartitionKey = Guid.NewGuid().ToString(), RowKey = competition, AccessCode = accessCode, RegistrationActive = true };
         }
 
         private static string GenerateAccessCode()
